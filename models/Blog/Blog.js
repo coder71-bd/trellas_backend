@@ -19,11 +19,15 @@ const BlogSchema = new mongoose.Schema(
       required: true,
     },
     time: {
+      type: String,
       required: true,
     },
     price: {
       type: Number,
       required: true,
+    },
+    rating: {
+      type: Number,
     },
     desc: {
       type: String,
@@ -36,6 +40,9 @@ const BlogSchema = new mongoose.Schema(
     location: {
       type: String,
       required: true,
+    },
+    status: {
+      type: String,
     },
   },
   { versionKey: false }
