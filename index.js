@@ -94,6 +94,20 @@ async function run() {
       res.json(result); // send the response to client
     });
 
+    //(UPDATE) --> UPDATE A SPECIFIC BLOG
+    app.put('/blogs/update/:id', async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: ObjectId(id) }; // query for single blog
+
+      const newBlog = req.body;
+
+      const updateDoc = { $set: newBlog };
+
+      const result = await Blog.updateOne(filter, updateDoc);
+
+      res.json(result); // send the respone to client side
+    });
+
     //(UPDATE) --> UPDATE AN USER
     app.put('/user', async (req, res) => {
       const user = req.body;
@@ -105,20 +119,6 @@ async function run() {
       const updateDoc = { $set: user };
 
       const result = await User.updateOne(filter, updateDoc, options);
-
-      res.json(result); // send the respone to client side
-    });
-
-    //(UPDATE) --> UPDATE A SPECIFIC BLOG
-    app.put('/user/:id', async (req, res) => {
-      const id = req.params.id;
-      const fitler = { _id: ObjectId(id) }; // query for single blog
-
-      const newBlog = req.body;
-
-      const updateDoc = { $set: newBlog };
-
-      const result = await User.updateOne(filter, updateDoc);
 
       res.json(result); // send the respone to client side
     });
