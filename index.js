@@ -27,6 +27,12 @@ mongoose.connect(uri, {
 
 async function run() {
   try {
+    // (READ) --> FIND ALL USER
+    app.get('/users', async (req, res) => {
+      const users = await User.find();
+      res.json(users); // send all the users
+    });
+
     // (READ) --> FIND A USER IS ADMIN OR NOT
     app.get('/user/isAdmin', async (req, res) => {
       const { email } = req.query;
@@ -44,6 +50,14 @@ async function run() {
       }
       const blogs = await Blog.find(filter);
       res.json(blogs); // send all the blogs to user
+    });
+
+    // (READ) --> GET A SPECIFIC USER BLOGS
+    app.get('/user/blogs', async (req, res) => {
+      const email = req.query.email;
+      const userBlogs = await Blog.find({ email }); // find the specific user blogs
+
+      res.json(userBlogs); // send the blogs to client side.
     });
 
     // (READ) --> GET A SINGLE BLOG FROM THE DATABASE
