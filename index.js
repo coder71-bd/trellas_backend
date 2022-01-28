@@ -66,10 +66,7 @@ async function run() {
       const newBlog = req.body; // blog info
 
       // insert the blog in blogs collection
-      const result = await Blog.insertMany({
-        ...newBlog,
-        status: 'pending',
-      });
+      const result = await Blog.insertMany(newBlog);
 
       res.json(result); // response after adding blog info in the database
     });

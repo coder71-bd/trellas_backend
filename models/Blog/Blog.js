@@ -23,11 +23,12 @@ const BlogSchema = new mongoose.Schema(
       required: true,
     },
     price: {
-      type: Number,
+      type: String,
       required: true,
     },
     rating: {
-      type: Number,
+      type: String,
+      required: true,
     },
     desc: {
       type: String,
@@ -43,6 +44,7 @@ const BlogSchema = new mongoose.Schema(
     },
     status: {
       type: String,
+      required: true,
     },
   },
   { versionKey: false }
