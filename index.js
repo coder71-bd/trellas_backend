@@ -44,17 +44,44 @@ async function run() {
     // (READ) --> GET ALL BLOGS FROM DATABASE (WITH QUERY)
     app.get('/blogs', async (req, res) => {
       const { price, rating, category } = req.query;
-      const filter = {};
-      if (price || rating || category) {
-        filter = { price, rating, category };
+      let query = {};
+
+      if (rating && price && category) {
+        query = { price: { $gt: 2999, $lt: price + 1 }, rating, category };
       }
-      const blogs = await Blog.find(filter);
+
+      const blogs = await Blog.find(query);
       res.json(blogs); // send all the blogs to user
+    });
+
+    // (READ) --> GET ALL BLOGS (FOR PAGINATION)
+    app.get('/pagination/blogs', async (req, res) => {
+      const { page, size, isAdmin } = req.query;
+      console.log(isAdmin);
+
+      let count;
+      if (isAdmin === 'true') {
+        count = await Blog.count({});
+      } else {
+        count = await Blog.count({ status: 'approved' });
+      }
+
+      console.log(count);
+
+      const blogs = await Blog.find()
+        .skip(parseInt(page) * parseInt(size))
+        .limit(parseInt(size));
+
+      res.send({
+        count,
+        blogs,
+      });
     });
 
     // (READ) --> GET A SPECIFIC USER BLOGS
     app.get('/user/blogs', async (req, res) => {
       const email = req.query.email;
+
       const userBlogs = await Blog.find({ email }); // find the specific user blogs
 
       res.json(userBlogs); // send the blogs to client side.
