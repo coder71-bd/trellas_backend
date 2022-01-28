@@ -57,7 +57,6 @@ async function run() {
     // (READ) --> GET ALL BLOGS (FOR PAGINATION)
     app.get('/pagination/blogs', async (req, res) => {
       const { page, size, isAdmin } = req.query;
-      console.log(isAdmin);
 
       let count;
       if (isAdmin === 'true') {
@@ -193,18 +192,14 @@ async function run() {
     });
 
     // (DELETE) --> DELETE A BLOG FROM THE DATABASE
-    app.delete('/blogs/:id', async (req, res, next) => {
-      try {
-        const id = req.params.id;
+    app.delete('/blogs/:id', async (req, res) => {
+      const id = req.params.id;
 
-        const query = { _id: ObjectId(id) };
+      const query = { _id: ObjectId(id) };
 
-        const result = await Blog.deleteOne(query); // delete the matched blog from database
+      const result = await Blog.deleteOne(query); // delete the matched blog from database
 
-        res.json(result); // send the response to client side
-      } catch (error) {
-        next(error);
-      }
+      res.json(result); // send the response to client side
     });
   } catch (error) {
     console.log(error.message);
